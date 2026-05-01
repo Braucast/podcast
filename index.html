@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Braukast</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0f0f;
+      color: #e8e8e8;
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Header ── */
+    header {
+      padding: 32px 40px 24px;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo { width: 44px; height: 44px; border-radius: 8px; }
+    .brand-text h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    .brand-text p  { color: #4ade80; font-size: 11px; margin-top: 2px; opacity: 0.8; }
+
+    /* ── Platform badges ── */
+    .platforms { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+    .badge-spotify  { background: #1DB954; color: #fff; }
+    .badge-secondary { background: #1a1a1a; color: #aaa; border: 1px solid #2a2a2a; }
+
+    /* ── Episode list ── */
+    main { padding: 24px 40px; }
+    .section-label {
+      color: #2d2d2d;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .episode {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #161616;
+    }
+    .ep-num   { color: #4ade80; font-size: 12px; font-weight: 700; min-width: 28px; opacity: 0.9; flex-shrink: 0; }
+    .ep-info  { flex: 1; min-width: 0; }
+    .ep-title { font-size: 13px; font-weight: 500; }
+    .ep-meta  { color: #3a3a3a; font-size: 11px; margin-top: 3px; }
+    .ep-link  { color: #4ade80; font-size: 10px; opacity: 0.7; white-space: nowrap; flex-shrink: 0; }
+    .ep-link:hover { opacity: 1; }
+
+    /* ── Footer ── */
+    footer { padding: 16px 40px; border-top: 1px solid #161616; }
+    footer p { color: #2a2a2a; font-size: 10px; }
+
+    /* ── States ── */
+    .state-msg { color: #3a3a3a; font-size: 12px; padding: 40px 0; }
+    .state-msg.error { color: #ef4444; }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      header, main, footer { padding-left: 20px; padding-right: 20px; }
+      header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img class="logo" src="assets/logo.png" alt="Braukast"
+         onerror="this.style.display='none'">
+    <div class="brand-text">
+      <h1>Braukast</h1>
+      <p id="tagline"></p>
+    </div>
+  </div>
+  <nav class="platforms">
+    <a class="badge badge-spotify"
+       href="https://open.spotify.com/show/1i8txBkDNEeDaKPsgbxToD"
+       target="_blank" rel="noopener">▶ Spotify</a>
+    <a class="badge badge-secondary"
+       href="https://anchor.fm/s/10038620/podcast/rss"
+       target="_blank" rel="noopener">RSS</a>
+  </nav>
+</header>
+
+<main>
+  <div class="section-label">ALLE FOLGEN</div>
+  <div id="episodes">
+    <p class="state-msg">Lädt…</p>
+  </div>
+</main>
+
+<footer>
+  <p>© <span id="year"></span> Braukast</p>
+</footer>
+
+<script>
+  const MONTHS = [
+    'Januar','Februar','März','April','Mai','Juni',
+    'Juli','August','September','Oktober','November','Dezember'
+  ];
+
+  function formatDate(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return `${d}. ${MONTHS[m - 1]} ${y}`;
+  }
+
+  function renderEpisode(ep) {
+    const row = document.createElement('div');
+    row.className = 'episode';
+
+    const num = document.createElement('span');
+    num.className = 'ep-num';
+    num.textContent = `#${ep.number}`;
+
+    const info = document.createElement('div');
+    info.className = 'ep-info';
+
+    const title = document.createElement('div');
+    title.className = 'ep-title';
+    title.textContent = ep.title;
+
+    const meta = document.createElement('div');
+    meta.className = 'ep-meta';
+    meta.textContent = formatDate(ep.date) + (ep.duration ? ' · ' + ep.duration : '');
+
+    info.appendChild(title);
+    info.appendChild(meta);
+
+    const link = document.createElement('a');
+    link.className = 'ep-link';
+    link.href = ep.url;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Anhören ↗';
+
+    row.appendChild(num);
+    row.appendChild(info);
+    row.appendChild(link);
+    return row;
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  fetch('episodes.json')
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+      const tagline = document.getElementById('tagline');
+      if (data.description) tagline.textContent = data.description;
+
+      const container = document.getElementById('episodes');
+      container.innerHTML = '';
+      if (!data.episodes.length) {
+        container.innerHTML = '<p class="state-msg">Noch keine Folgen.</p>';
+        return;
+      }
+      data.episodes.forEach(ep => container.appendChild(renderEpisode(ep)));
+    })
+    .catch(() => {
+      document.getElementById('episodes').innerHTML =
+        '<p class="state-msg error">Episoden konnten nicht geladen werden.</p>';
+    });
+</script>
+
+</body>
+</html>
