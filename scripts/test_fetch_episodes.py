@@ -48,6 +48,9 @@ class TestParseDuration(unittest.TestCase):
     def test_empty_string(self):
         self.assertIsNone(parse_duration(''))
 
+    def test_negative_seconds_returns_none(self):
+        self.assertIsNone(parse_duration('-3600'))
+
 
 class TestParseDate(unittest.TestCase):
     def test_rfc2822_with_offset(self):
@@ -55,6 +58,15 @@ class TestParseDate(unittest.TestCase):
 
     def test_rfc2822_with_gmt(self):
         self.assertEqual(parse_date('Thu, 15 Feb 2024 10:00:00 GMT'), '2024-02-15')
+
+    def test_none_input(self):
+        self.assertIsNone(parse_date(None))
+
+    def test_empty_string(self):
+        self.assertIsNone(parse_date(''))
+
+    def test_unparseable_returns_none(self):
+        self.assertIsNone(parse_date('not-a-date'))
 
 
 class TestSpotifyUrlFromUri(unittest.TestCase):
@@ -69,6 +81,9 @@ class TestSpotifyUrlFromUri(unittest.TestCase):
 
     def test_non_episode_uri_returns_none(self):
         self.assertIsNone(spotify_url_from_uri('spotify:show:abc'))
+
+    def test_empty_episode_id_returns_none(self):
+        self.assertIsNone(spotify_url_from_uri('spotify:episode:'))
 
 
 class TestParseFeed(unittest.TestCase):

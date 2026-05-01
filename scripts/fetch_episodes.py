@@ -23,6 +23,8 @@ def parse_duration(s):
             h, m = 0, int(parts[0])
         else:
             total = int(s)
+            if total < 0:
+                return None
             h, m = total // 3600, (total % 3600) // 60
     except ValueError:
         return None
@@ -30,17 +32,21 @@ def parse_duration(s):
 
 
 def parse_date(s):
+    if not s:
+        return None
     for fmt in ('%a, %d %b %Y %H:%M:%S %z', '%a, %d %b %Y %H:%M:%S GMT'):
         try:
             return datetime.strptime(s.strip(), fmt).strftime('%Y-%m-%d')
         except ValueError:
             continue
-    return s[:10] if s else None
+    return None
 
 
 def spotify_url_from_uri(uri):
     if uri and uri.startswith('spotify:episode:'):
-        return 'https://open.spotify.com/episode/' + uri.split(':')[-1]
+        episode_id = uri.split(':', 2)[-1]
+        if episode_id:
+            return 'https://open.spotify.com/episode/' + episode_id
     return None
 
 
