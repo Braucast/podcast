@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Braukast</title>
+  <meta name="description" content="Ein Hobbybrau-Podcast — alle Folgen im Überblick.">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -92,10 +93,10 @@
   <nav class="platforms">
     <a class="badge badge-spotify"
        href="https://open.spotify.com/show/1i8txBkDNEeDaKPsgbxToD"
-       target="_blank" rel="noopener">▶ Spotify</a>
+       target="_blank" rel="noopener noreferrer">▶ Spotify</a>
     <a class="badge badge-secondary"
        href="https://anchor.fm/s/10038620/podcast/rss"
-       target="_blank" rel="noopener">RSS</a>
+       target="_blank" rel="noopener noreferrer">RSS</a>
   </nav>
 </header>
 
@@ -117,8 +118,11 @@
   ];
 
   function formatDate(iso) {
-    const [y, m, d] = iso.split('-').map(Number);
-    return `${d}. ${MONTHS[m - 1]} ${y}`;
+    if (!iso || typeof iso !== 'string') return '';
+    const parts = iso.split('-').map(Number);
+    if (parts.length !== 3 || parts.some(isNaN)) return iso;
+    const [y, m, d] = parts;
+    return `${d}. ${MONTHS[m - 1] ?? '?'} ${y}`;
   }
 
   function renderEpisode(ep) {
@@ -145,7 +149,7 @@
 
     const link = document.createElement('a');
     link.className = 'ep-link';
-    link.href = ep.url;
+    link.href = /^https?:\/\//.test(ep.url) ? ep.url : '#';
     link.target = '_blank';
     link.rel = 'noopener';
     link.textContent = 'Anhören ↗';
@@ -166,11 +170,12 @@
 
       const container = document.getElementById('episodes');
       container.innerHTML = '';
-      if (!data.episodes.length) {
+      const episodes = Array.isArray(data.episodes) ? data.episodes : [];
+      if (!episodes.length) {
         container.innerHTML = '<p class="state-msg">Noch keine Folgen.</p>';
         return;
       }
-      data.episodes.forEach(ep => container.appendChild(renderEpisode(ep)));
+      episodes.forEach(ep => container.appendChild(renderEpisode(ep)));
     })
     .catch(() => {
       document.getElementById('episodes').innerHTML =
