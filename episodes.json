@@ -1,4 +1,89 @@
 {
-  "description": "",
-  "episodes": []
+  "description": "Ein Hobbybrau-Podcast",
+  "episodes": [
+    {
+      "number": 12,
+      "title": "BC012 - CO₂",
+      "date": "2026-04-17",
+      "duration": "1h 40 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC012---CO-e3i1qnj"
+    },
+    {
+      "number": 11,
+      "title": "BC011 - Reinigung",
+      "date": "2024-01-22",
+      "duration": "1h 28 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC011---Reinigung-e2ep9l1"
+    },
+    {
+      "number": 10,
+      "title": "BC010 - Bier & Brot",
+      "date": "2022-05-19",
+      "duration": "1h 32 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC010---Bier--Brot-e1ioav5"
+    },
+    {
+      "number": 9,
+      "title": "BC009 - Rohfrucht",
+      "date": "2021-10-03",
+      "duration": "1h 33 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC009---Rohfrucht-e1879dm"
+    },
+    {
+      "number": 8,
+      "title": "BC008 - Von Labels und Etikettiermaschinen",
+      "date": "2021-01-07",
+      "duration": "1h 30 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC008---Von-Labels-und-Etikettiermaschinen-eoligh"
+    },
+    {
+      "number": 7,
+      "title": "BC007 - Bier Etiketten",
+      "date": "2020-10-09",
+      "duration": "1h 29 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC007---Bier-Etiketten-ekqdna"
+    },
+    {
+      "number": 6,
+      "title": "BC006 - How to serve a craft",
+      "date": "2020-04-21",
+      "duration": "1h 22 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC006---How-to-serve-a-craft-ed1k4n"
+    },
+    {
+      "number": 5,
+      "title": "BC005 – Berliner Weisse",
+      "date": "2019-10-14",
+      "duration": "2h 28 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC005--Berliner-Weisse-e8g9o5"
+    },
+    {
+      "number": 4,
+      "title": "BC004 – Grisette",
+      "date": "2018-11-22",
+      "duration": "47 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC004--Grisette-e8g9o4"
+    },
+    {
+      "number": 3,
+      "title": "BC003 – Maischen",
+      "date": "2018-10-15",
+      "duration": "1h 54 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC003--Maischen-e8g9o7"
+    },
+    {
+      "number": 2,
+      "title": "BC002 – Dry Hopping",
+      "date": "2018-04-05",
+      "duration": "1h 29 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC002--Dry-Hopping-e8g9o6"
+    },
+    {
+      "number": 1,
+      "title": "BC001 – Die Gose im Laufe der Zeit",
+      "date": "2017-10-25",
+      "duration": "1h 18 min",
+      "url": "https://podcasters.spotify.com/pod/show/braucast/episodes/BC001--Die-Gose-im-Laufe-der-Zeit-e8g9o8"
+    }
+  ]
 }
